@@ -70,9 +70,9 @@ class RoundAndRound(ColorCycleTemplate):
 class Solid(ColorCycleTemplate):
     """Paints the strip with one colour."""
 
-    def init(self, strip, num_led, color):
+    def init(self, strip, num_led):
         for led in range(0, num_led):
-            strip.set_pixel_rgb(led, color, 5)  # Paint 5% white
+            strip.set_pixel_rgb(led, 0xC06A09, 5)  # Paint 5% white
 
     def update(self, strip, num_led, num_steps_per_cycle, current_step,
                current_cycle):
