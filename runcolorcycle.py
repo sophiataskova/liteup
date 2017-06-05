@@ -46,3 +46,6 @@ def extra_demo():
 
 while True:
     solid_color()
+    clock()
+    extra_demo()
+    extra_demo
