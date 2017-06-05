@@ -7,9 +7,7 @@ NUM_LED = 300
 def solid_color():
     # One Cycle with one step and a pause of one second. Hence one second of white light
     print('Three Seconds of white light')
-    MY_CYCLE = colorschemes.Solid(num_led=NUM_LED, pause_value=3,
-                                  num_steps_per_cycle=1, num_cycles=1)
-    MY_CYCLE = colorschemes.AMBER(num_led=NUM_LED, pause_value=3,
+    MY_CYCLE = colorschemes.Amber(num_led=NUM_LED, pause_value=30,
                                   num_steps_per_cycle=1, num_cycles=1)
     MY_CYCLE.start()
 
@@ -48,6 +46,6 @@ def extra_demo():
 
 while True:
     solid_color()
-    clock()
-    extra_demo()
-    extra_demo()
+    # clock()
+    # extra_demo()
+    # extra_demo()
