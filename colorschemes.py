@@ -80,6 +80,19 @@ class Solid(ColorCycleTemplate):
         return 0
 
 
+class Amber(ColorCycleTemplate):
+    """Paints the strip with one colour."""
+
+    def init(self, strip, num_led):
+        for led in range(0, num_led):
+            strip.set_pixel_rgb(led, 0xF9DC68, 25)  # Paint 25% white
+
+    def update(self, strip, num_led, num_steps_per_cycle, current_step,
+               current_cycle):
+        # Do nothing: Init lit the strip, and update just keeps it this way
+        return 0
+
+
 class Rainbow(ColorCycleTemplate):
     """Paints a rainbow effect across the entire strip."""
 
