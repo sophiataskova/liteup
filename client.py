@@ -1,9 +1,14 @@
-import apa102
+from APA102 import APA102
 from easy_schemes import MaxWhite
+
+NUM_LED = 300
 
 
 def main():
-    strip = apa102.APA102(num_led=self.num_led,
-                          global_brightness=self.global_brightness,
-                          order="RBG")  # Initialize the strip
+    strip = APA102(num_led=NUM_LED,
+                   order="RBG")  # Initialize the strip
     MaxWhite(strip).start()
+
+
+if __name__ == '__main__':
+    main()

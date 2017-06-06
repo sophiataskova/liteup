@@ -164,7 +164,7 @@ class APA102:
 
         self._set_pixel(led_num, red, green, blue, brightness)
 
-    def _set_pixel(led_num, red, green, blue, brightness):
+    def _set_pixel(self, led_num, red, green, blue, brightness):
         """
         Just set the brightness without any more mucking about
         """

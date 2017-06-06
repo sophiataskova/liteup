@@ -4,29 +4,29 @@ from scheme import Scheme
 class Solid(Scheme):
     # abstract base
     def setall(self, color):
-        for led in range(self.strip.num_leds):
-            self.strip.smart_set_pixel(*color)
+        for led in range(self.strip.num_led):
+            self.strip.smart_set_pixel(led, *color)
 
 
 class MaxWhite(Solid):
-    pause_between_updates = 60
+    PAUSE_BETWEEN_PAINTS = 60
 
-    def init():
-        self.setall(0xFFF, 0xFFF, 0xFFF)
+    def init(self):
+        self.setall((0xFFF, 0xFFF, 0xFFF))
 
-    def paint():
+    def paint(self):
         return False
 
 
 class FullScan(Solid):
-    pause_between_updates = 0.001
+    PAUSE_BETWEEN_PAINTS = 0.001
     color = [0, 0, 0]
     color_step = [1, 0, 0]
 
-    def init():
+    def init(self):
         self.setall(self.color)
 
-    def paint():
+    def paint(self):
         color = [val + step for val, step in zip(self.color, self.color_step)]
 
         if max(self.color) > 0xFFF:
