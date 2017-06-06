@@ -1,5 +1,8 @@
-/.DS_Store
-/.project
-/.pydevproject
-/__pycache__
-
+.sass-cache
+.DS_Store
+*.pyc
+*~
+*.swp
+*.swo
+.\#*
+*pycache*

@@ -5,7 +5,7 @@ import apa102
 import sys
 
 
-class Scheme(object):
+class Scheme:
     """
     This is the base for all Scheme objects.
     They are similar to the color cycle template provided by APA102, but Schemes
