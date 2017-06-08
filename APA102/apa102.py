@@ -164,10 +164,14 @@ class APA102:
 
         self._set_pixel(led_num, red, green, blue, brightness)
 
-    def _set_pixel(led_num, red, green, blue, brightness):
+    def _set_pixel(self, led_num, red, green, blue, brightness):
         """
         Just set the brightness without any more mucking about
         """
+
+        red = gamma_correct(red, 8)
+        blue = gamma_correct(blue, 8)
+        green = gamma_correct(green, 8)
 
         # LED startframe is three "1" bits, followed by 5 brightness bits
         ledstart = (brightness & 0b00011111) | self.LED_START
@@ -199,9 +203,9 @@ class APA102:
         (https://learn.adafruit.com/led-tricks-gamma-correction/the-issue)
         """
 
-        r = gamma_correct(r)
-        b = gamma_correct(b)
-        g = gamma_correct(g)
+        # r = gamma_correct(r, 12)
+        # b = gamma_correct(b, 12)
+        # g = gamma_correct(g, 12)
 
         r, g, b, brightness = extract_brightness(r, g, b)
         self._set_pixel(led_num, r, g, b, brightness)

@@ -1,7 +1,6 @@
 """The module contains the base Scheme class"""
 
 import time
-import apa102
 import sys
 
 
@@ -20,7 +19,7 @@ class Scheme:
     'paint' method.
     """
 
-    pause_between_updates = 0.001  # Override to control animation speed!
+    PAUSE_BETWEEN_PAINTS = 0.001  # Override to control animation speed!
 
     def __init__(self, strip):
         self.strip = strip
@@ -58,15 +57,16 @@ class Scheme:
     def start(self):
         """This method does the actual work."""
         try:
+            print "starting"
             self.strip.clear_strip()
             self.init()  # Call the subclasses init method
             self.strip.show()
             while True:  # Loop forever
-                need_repaint = self.update()
+                need_repaint = self.paint()
                 if need_repaint:
                     self.strip.show()  # repaint if required
                 # TODO asyncio yield-sleep?
-                time.sleep(self.pause_between_updates)  # Pause until the next step
+                time.sleep(self.PAUSE_BETWEEN_PAINTS)  # Pause until the next step
 
         finally:
             # Finished, cleanup everything
