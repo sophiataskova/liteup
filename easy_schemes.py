@@ -11,7 +11,7 @@ class Solid(Scheme):
 class MaxWhite(Solid):
     pause_between_updates = 60
 
-    def init():
+    def init(self):
         self.setall(0xFFF, 0xFFF, 0xFFF)
 
     def paint():
@@ -23,7 +23,7 @@ class FullScan(Solid):
     color = [0, 0, 0]
     color_step = [1, 0, 0]
 
-    def init():
+    def init(self):
         self.setall(self.color)
 
     def paint():
