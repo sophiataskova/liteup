@@ -9,7 +9,7 @@ def log_wire(r, g, b):
     # b = gamma_correct(b)
     # g = gamma_correct(g)
 
-    print extract_brightness(r, g, b)
+    print(extract_brightness(r, g, b))
 
 
 class MaxWhite(Solid):

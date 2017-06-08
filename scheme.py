@@ -57,7 +57,7 @@ class Scheme:
     def start(self):
         """This method does the actual work."""
         try:
-            print "starting"
+            print("starting")
             self.strip.clear_strip()
             self.init()  # Call the subclasses init method
             self.strip.show()
