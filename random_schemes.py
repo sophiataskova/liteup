@@ -40,7 +40,7 @@ class Perlin(GeneratorScheme, InterpolateScheme):
                              next(b_perlin),
                              next(brightness_perlin)]
 
-                sub_gens.append(self.paint_lin_interp(led, cur_color, new_color))
+                sub_gens.append(self.paint_lin_interp(led, cur_color, new_color, steps=100))
 
                 for sub_gen in sub_gens:
                     # we have a tail of colors we want to update
