@@ -218,7 +218,11 @@ class APA102:
         at the led number. These may be post-gamma-correction
         """
         start_index = 4 * led_num
-        return self.leds[start_index:start_index + 4]
+        color = self.leds[start_index + 1: start_index + 4]
+        # UNDO the LED startframe
+        # LED startframe is three "1" bits, followed by 5 brightness bits
+        brightness = (self.leds[start_index] & 0b00011111)
+        return color + [brightness]
 
     def rotate(self, positions=1):
         """ Rotate the LEDs by the specified number of positions.
