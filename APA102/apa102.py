@@ -25,6 +25,7 @@ class APA102:
      - set_pixel
      - set_pixel_rgb
      - smart_set_pixel
+     - get_pixel
      - show
      - clear_strip
      - cleanup
@@ -169,9 +170,10 @@ class APA102:
         Just set the brightness without any more mucking about
         """
 
-        red = gamma_correct(red, 8)
-        blue = gamma_correct(blue, 8)
-        green = gamma_correct(green, 8)
+        # TODO: Should we gamma correct?
+        # red = gamma_correct(red, 8)
+        # blue = gamma_correct(blue, 8)
+        # green = gamma_correct(green, 8)
 
         # LED startframe is three "1" bits, followed by 5 brightness bits
         ledstart = (brightness & 0b00011111) | self.LED_START
@@ -196,7 +198,7 @@ class APA102:
 
     def smart_set_pixel(self, led_num, r, b, g):
         """Liteup-added fn
-        There are a few improvements over the other set_pixel methods:
+        There are a few changes over the other set_pixel methods:
         - this uses 12 bit colors, and automagically calculates global brightness
            (colors are downshifted to 8 bits on the strip)
         - this does gamma correction to improve the percieved range of the colors
@@ -209,6 +211,14 @@ class APA102:
 
         r, g, b, brightness = extract_brightness(r, g, b)
         self._set_pixel(led_num, r, g, b, brightness)
+
+    def get_pixel(self, led_num):
+        """Liteup-added fn
+        return the actual pixel values we have stored in the stripbuffer
+        at the led number. These may be post-gamma-correction
+        """
+        start_index = 4 * led_num
+        return self.leds[start_index:start_index + 4]
 
     def rotate(self, positions=1):
         """ Rotate the LEDs by the specified number of positions.
