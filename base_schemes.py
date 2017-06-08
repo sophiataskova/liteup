@@ -15,6 +15,13 @@ class GeneratorScheme(Scheme):
     def paint(self):
         return next(self.gen)
 
+    def tick_generators(self, gen_list):
+        for gen in gen_list:
+            try:
+                next(gen)
+            except StopIteration:
+                gen_list.remove(gen)
+
 
 class InterpolateScheme(Scheme):
 
@@ -24,7 +31,6 @@ class InterpolateScheme(Scheme):
                 self.lin_interp(cur_step, steps, start_val, target_val)
                 for start_val, target_val in zip(start_color, target_color)
             ]
-            print(stepcolor)
             self.strip.set_pixel(led_num, *stepcolor)
             yield True
 
