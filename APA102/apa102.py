@@ -161,7 +161,6 @@ class APA102:
         # as we expect some brightness unless set to 0
         brightness = ceil(bright_percent * self.global_brightness / 100.0)
         brightness = int(brightness)
-        print brightness
 
         self._set_pixel(led_num, red, green, blue, brightness)
 

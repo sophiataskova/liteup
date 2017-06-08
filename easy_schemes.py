@@ -1,6 +1,6 @@
 from scheme import Scheme
 from APA102.color_utils import extract_brightness
-
+from random import randint
 
 def log_wire(r, g, b):
     # r = gamma_correct(r)
@@ -13,10 +13,16 @@ def log_wire(r, g, b):
 class Solid(Scheme):
     # abstract base
     def setall(self, color):
-        log_wire(*color)
         for led in range(self.strip.num_led):
             self.strip.set_pixel(led, *color)
 
+
+class GeneratorScheme(Scheme):
+    def init(self):
+        self.gen = self.generator()
+
+    def paint(self):
+        return next(self.gen)
 
 class MaxWhite(Solid):
     PAUSE_BETWEEN_PAINTS = 60
@@ -43,7 +49,7 @@ class FullScan(Solid):
             self.color = [0, 0, 0]
             self.color_step.append(self.color_step.pop(0))
 
-        self.setall(self.color)
+        self.setall(self.color + [31])
         return True
 
 
@@ -60,3 +66,21 @@ class LuminosityTest(Solid):
 
     def paint(self):
         return False
+
+
+class RandomColorChaos(Scheme):
+    PAUSE_BETWEEN_PAINTS = 1.5
+    def paint(self):
+        for led in range(self.strip.num_led):
+            self.strip.set_pixel(led, randint(0, 256), randint(0, 256), randint(0, 256), 1)
+        return True
+
+
+class RandomColorGen(GeneratorScheme):
+    PAUSE_BETWEEN_PAINTS = 1.5
+    def generator(self):
+        while True:
+             for led in range(self.strip.num_led):
+                self.strip.set_pixel(led, randint(0, 256), randint(0, 256), randint(0, 256), 1)
+                yield True
+
