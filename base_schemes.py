@@ -21,7 +21,7 @@ class InterpolateScheme(Scheme):
     def paint_lin_interp(self, led_num, start_color, target_color, steps=10):
         for cur_step in range(steps):
             stepcolor = [
-                lin_interp(cur_step, steps, start_val, target_val)
+                self.lin_interp(cur_step, steps, start_val, target_val)
                 for start_val, target_val in zip(start_color, target_color)
             ]
             print(stepcolor)

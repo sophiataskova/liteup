@@ -23,13 +23,13 @@ class RandomColorGen(GeneratorScheme):
 
 
 class Perlin(GeneratorScheme, InterpolateScheme):
-    PAUSE_BETWEEN_PAINTS = 0.04
+    PAUSE_BETWEEN_PAINTS = 0.004
 
     def generator(self):
         r_perlin = gen_perlin_ints(0, 255)
         g_perlin = gen_perlin_ints(0, 255)
         b_perlin = gen_perlin_ints(0, 255)
-        brightness_perlin = gen_perlin_ints(0, 255)
+        brightness_perlin = gen_perlin_ints(0, 100)
         while True:
             for led in range(self.strip.num_led):
                 cur_color = self.strip.get_pixel(led)
