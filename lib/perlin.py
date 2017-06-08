@@ -1,7 +1,6 @@
 from __future__ import division
 import itertools
 import random
-import noise
 
 
 def gen_perlin(num_octaves=5):
@@ -57,9 +56,7 @@ def print_perlin(nums):
     width = 80
     for num in nums:
         spacing = int(num * width)
-        print "%1.2f%s" % (num, " " * spacing),
-        print "|",
-        print " " * (width - spacing)
+        print("%1.2f%s|%s" % (num, " " * spacing, " " * (width - spacing)))
 
 
 # print_perlin(gen_octave(9))

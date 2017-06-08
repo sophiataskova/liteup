@@ -24,5 +24,5 @@ class InterpolateScheme(Scheme):
                 int(start_val + ((target_Val - start_val) * (cur_step / steps)))
                 for start_val, target_Val in zip(start_color, target_color)
             ]
-            self.strip.set_pixel(led_num, stepcolor)
+            self.strip.set_pixel(led_num, *stepcolor)
             yield True

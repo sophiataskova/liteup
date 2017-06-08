@@ -1,4 +1,5 @@
-from base_schemes import Solid, GeneratorScheme
+from scheme import Scheme
+from base_schemes import GeneratorScheme, InterpolateScheme
 from lib.perlin import gen_perlin_ints
 
 
