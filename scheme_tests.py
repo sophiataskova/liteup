@@ -13,5 +13,8 @@ class InterpolateSchemeTester(unittest.TestCase):
         # hit rounding
         self.assertEqual(InterpolateScheme.lin_interp(6, 10, 0, 12), 7)
 
+    def test_lin_interp2(self):
+        self.assertEqual(InterpolateScheme.lin_interp(6, 10, 20, 30), 26)
+
 if __name__ == '__main__':
     unittest.main()

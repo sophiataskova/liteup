@@ -82,7 +82,7 @@ class APA102:
     LED_START = 0b11100000  # Three "1" bits, followed by 5 brightness bits
 
     def __init__(self, num_led, global_brightness=MAX_BRIGHTNESS,
-                 order='rgb', bus=0, device=1, max_speed_hz=8000000):
+                 order='rbg', bus=0, device=1, max_speed_hz=8000000):
         self.num_led = num_led  # The number of LEDs in the Strip
         order = order.lower()
         self.rgb = RGB_MAP.get(order, RGB_MAP['rgb'])
@@ -220,12 +220,16 @@ class APA102:
         """
         start_index = 4 * led_num
 
+        red = self.leds[start_index + self.rgb[0]]
+        green = self.leds[start_index + self.rgb[1]]
+        blue = self.leds[start_index + self.rgb[2]]
         color = self.leds[start_index + 1: start_index + 4]
+
         # UNDO the LED startframe
         # LED startframe is three "1" bits, followed by 5 brightness bits
         brightness = (self.leds[start_index] & 0b00011111)
 
-        return color + [brightness]
+        return [red, green, blue, brightness]
 
     def get_pixel(self, led_num):
         """Liteup-added fn

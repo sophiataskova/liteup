@@ -46,15 +46,15 @@ class APA102Tester(unittest.TestCase):
 
     def test_hidden_set_then_hidden_get(self):
         strip = APA102(1)
-        strip._set_pixel(0, 0xFF, 0xFF, 0xFF, 10)
-        self.assertEqual(strip._get_pixel(0), [0xFF, 0xFF, 0xFF, 10])
+        strip._set_pixel(0, 0xAB, 0xCD, 0xEF, 10)
+        self.assertEqual(strip._get_pixel(0), [0xAB, 0xCD, 0xEF, 10])
 
     def test_set_then_get(self):
         strip = APA102(1)
-        strip._set_pixel(0, 0xFF, 0xFF, 0xFF, 10)
+        strip._set_pixel(0, 0xAB, 0xCD, 0xEF, 10)
         # There's some inaccuracy due to our rounding to convert percentage
         # to brightness int
-        self.assertEqual(strip.get_pixel(0), [0xFF, 0xFF, 0xFF, 32])
+        self.assertEqual(strip.get_pixel(0), [0xAB, 0xCD, 0xEF, 32])
 
 
 if __name__ == '__main__':
