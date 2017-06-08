@@ -24,7 +24,7 @@ def extract_brightness(r, g, b):
     return (r, g, b, brightness)
 
 
-def gamma_correct(led_val, num_bits):
+def gamma_correct(led_val, num_bits=8):
     max_val = (1 << num_bits) - 1.0
     corrected = pow(led_val / max_val, GAMMA_CORRECT_FACTOR) * max_val
     return int(corrected)

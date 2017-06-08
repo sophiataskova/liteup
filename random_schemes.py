@@ -1,6 +1,7 @@
 from scheme import Scheme
 from base_schemes import GeneratorScheme, InterpolateScheme
 from lib.perlin import gen_perlin_ints
+from APA102.color_utils import gamma_correct
 
 
 class RandomColorChaos(Scheme):
@@ -35,9 +36,9 @@ class Perlin(GeneratorScheme, InterpolateScheme):
         while True:
             for led in range(self.strip.num_led):
                 cur_color = self.strip.get_pixel(led)
-                new_color = [next(r_perlin),
-                             next(g_perlin),
-                             next(b_perlin),
+                new_color = [gamma_correct(next(r_perlin)),
+                             gamma_correct(next(g_perlin)),
+                             gamma_correct(next(b_perlin)),
                              next(brightness_perlin)]
 
                 sub_gens.append(self.paint_lin_interp(led, cur_color, new_color, steps=100))
