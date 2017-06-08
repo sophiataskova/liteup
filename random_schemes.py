@@ -23,9 +23,11 @@ class RandomColorGen(GeneratorScheme):
 
 
 class Perlin(GeneratorScheme, InterpolateScheme):
-    PAUSE_BETWEEN_PAINTS = 0.004
+    PAUSE_BETWEEN_PAINTS = 0.04
 
     def generator(self):
+        sub_gens = []
+
         r_perlin = gen_perlin_ints(0, 255)
         g_perlin = gen_perlin_ints(0, 255)
         b_perlin = gen_perlin_ints(0, 255)
@@ -38,4 +40,13 @@ class Perlin(GeneratorScheme, InterpolateScheme):
                              next(b_perlin),
                              next(brightness_perlin)]
 
-                yield from self.paint_lin_interp(led, cur_color, new_color)
+                sub_gens.append(self.paint_lin_interp(led, cur_color, new_color))
+
+                for sub_gen in sub_gens:
+                    # we have a tail of colors we want to update
+                    try:
+                        next(sub_gen)
+                    except StopIteration:
+                        sub_gens.remove(sub_gen)
+
+                yield True
