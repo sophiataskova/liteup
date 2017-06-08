@@ -8,7 +8,8 @@ NUM_LED = 390
 
 def main():
     strip = APA102(num_led=NUM_LED,
-                   order="RBG")  # Initialize the strip
+                   order="RBG",
+                   max_speed_hz=6000000)  # Initialize the strip
     Perlin(strip).start()
 
 
