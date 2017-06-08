@@ -212,17 +212,33 @@ class APA102:
         r, g, b, brightness = extract_brightness(r, g, b)
         self._set_pixel(led_num, r, g, b, brightness)
 
+    def _get_pixel(self, led_num):
+        """Liteup-added fn
+        internal to get_pixel, doesn't adjust for brightness percent.
+        this is a parallel to _set_pixel
+
+        """
+        start_index = 4 * led_num
+
+        color = self.leds[start_index + 1: start_index + 4]
+        # UNDO the LED startframe
+        # LED startframe is three "1" bits, followed by 5 brightness bits
+        brightness = (self.leds[start_index] & 0b00011111)
+
+        return color + [brightness]
+
     def get_pixel(self, led_num):
         """Liteup-added fn
         return the actual pixel values we have stored in the stripbuffer
         at the led number. These may be post-gamma-correction
         """
-        start_index = 4 * led_num
-        color = self.leds[start_index + 1: start_index + 4]
-        # UNDO the LED startframe
-        # LED startframe is three "1" bits, followed by 5 brightness bits
-        brightness = (self.leds[start_index] & 0b00011111)
-        return color + [brightness]
+
+        unadjusted_color = self._get_pixel(led_num)
+        brightness = unadjusted_color[-1]
+        # adjust brightness back to a percent for us
+        brightness = int(100 * brightness / self.global_brightness)
+        adjusted_color = unadjusted_color[:3] + [brightness]
+        return adjusted_color
 
     def rotate(self, positions=1):
         """ Rotate the LEDs by the specified number of positions.
