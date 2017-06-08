@@ -2,6 +2,7 @@ from scheme import Scheme
 from base_schemes import GeneratorScheme, InterpolateScheme
 from lib.perlin import gen_perlin_ints
 from APA102.color_utils import gamma_correct
+import config
 
 
 class RandomColorChaos(Scheme):
@@ -26,14 +27,15 @@ class RandomColorGen(GeneratorScheme):
 class Perlin(GeneratorScheme, InterpolateScheme):
     PAUSE_BETWEEN_PAINTS = 0.04
 
+    # how long the perlin wave is, and how fast they adjust
     num_steps = 50
+    # how chaotic the perlin is. higher is more stable
+    perlin_octaves = 6
 
     def generator(self):
         waves = [
-            self.perlin_wave(0),
-            self.perlin_wave(117),
-            self.perlin_wave(176),
-            self.perlin_wave(295),
+            self.perlin_wave(corner)
+            for corner in config.corners
         ]
         while True:
             self.tick_generators(waves)
@@ -42,9 +44,9 @@ class Perlin(GeneratorScheme, InterpolateScheme):
     def perlin_wave(self, start_point):
         sub_gens = []
 
-        r_perlin = gen_perlin_ints(0, 255)
-        g_perlin = gen_perlin_ints(0, 255)
-        b_perlin = gen_perlin_ints(0, 255)
+        r_perlin = gen_perlin_ints(0, 255, num_octaves=self.perlin_octaves)
+        g_perlin = gen_perlin_ints(0, 255, num_octaves=self.perlin_octaves)
+        b_perlin = gen_perlin_ints(0, 255, num_octaves=self.perlin_octaves)
         brightness_perlin = gen_perlin_ints(0, 100)
         while True:
             for led in range(start_point, self.strip.num_led):
