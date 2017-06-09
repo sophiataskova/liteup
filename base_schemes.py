@@ -4,7 +4,7 @@ from scheme import Scheme
 class Solid(Scheme):
     # abstract base
     def setall(self, color):
-        for led in range(self.strip.num_led):
+        for led in range(self.strip.num_leds):
             self.strip.set_pixel(led, *color)
 
 

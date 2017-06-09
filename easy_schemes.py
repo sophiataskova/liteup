@@ -47,7 +47,7 @@ class LuminosityTest(Solid):
     def init(self):
         dim = 50
         bright = 255
-        for led in range(0, self.strip.num_led, 3):
+        for led in range(0, self.strip.num_leds, 3):
             self.strip.set_pixel(led, dim, 0, 0, bright_percent=100)
             self.strip.set_pixel(led + 1, dim, dim, dim, bright_percent=100)
             self.strip.set_pixel(led + 2, bright, bright, bright, bright_percent=3)

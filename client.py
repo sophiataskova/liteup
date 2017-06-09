@@ -2,15 +2,16 @@
 from APA102 import APA102
 from easy_schemes import LuminosityTest, MaxWhite, FullScan
 from random_schemes import Perlin
+from rts import RealTimeScheme
 
-NUM_LED = 390
+NUM_LEDS = 390
 
 
 def main():
-    strip = APA102(num_led=NUM_LED,
+    strip = APA102(num_leds=NUM_LEDS,
                    order="RBG",
                    max_speed_hz=6000000)  # Initialize the strip
-    Perlin(strip).start()
+    RealTimeScheme(strip).start()
 
 
 if __name__ == '__main__':

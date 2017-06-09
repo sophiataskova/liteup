@@ -9,7 +9,7 @@ class RandomColorChaos(Scheme):
     PAUSE_BETWEEN_PAINTS = 1.5
 
     def paint(self):
-        for led in range(self.strip.num_led):
+        for led in range(self.strip.num_leds):
             self.strip.set_pixel(led, randint(0, 256), randint(0, 256), randint(0, 256), 1)
         return True
 
@@ -19,7 +19,7 @@ class RandomColorGen(GeneratorScheme):
 
     def generator(self):
         while True:
-            for led in range(self.strip.num_led):
+            for led in range(self.strip.num_leds):
                 self.strip.set_pixel(led, randint(0, 256), randint(0, 256), randint(0, 256), 1)
                 yield True
 
