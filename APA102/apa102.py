@@ -81,9 +81,9 @@ class APA102:
     MAX_BRIGHTNESS = 31  # Safeguard: Set to a value appropriate for your setup
     LED_START = 0b11100000  # Three "1" bits, followed by 5 brightness bits
 
-    def __init__(self, num_led, global_brightness=MAX_BRIGHTNESS,
+    def __init__(self, num_leds, global_brightness=MAX_BRIGHTNESS,
                  order='rbg', bus=0, device=1, max_speed_hz=8000000):
-        self.num_led = num_led  # The number of LEDs in the Strip
+        self.num_leds = num_leds  # TODO only this one
         order = order.lower()
         self.rgb = RGB_MAP.get(order, RGB_MAP['rgb'])
         # Limit the brightness to the maximum if it's set higher
@@ -92,7 +92,7 @@ class APA102:
         else:
             self.global_brightness = global_brightness
 
-        self.leds = [self.LED_START, 0, 0, 0] * self.num_led  # Pixel buffer
+        self.leds = [self.LED_START, 0, 0, 0] * self.num_leds  # Pixel buffer
         self.spi = spidev.SpiDev()  # Init the SPI device
         self.spi.open(bus, device)  # Open SPI port 0, slave device (CS) 1
         # Up the speed a bit, so that the LEDs are painted faster
@@ -134,14 +134,14 @@ class APA102:
         of the driver could omit the "clockStartFrame" method if enough zeroes have
         been sent as part of "clockEndFrame".
         """
-        # Round up num_led/2 bits (or num_led/16 bytes)
-        for _ in range((self.num_led + 15) // 16):
+        # Round up num_leds/2 bits (or num_leds/16 bytes)
+        for _ in range((self.num_leds + 15) // 16):
             self.spi.xfer2([0x00])
 
     def clear_strip(self):
         """ Turns off the strip and shows the result right away."""
 
-        for led in range(self.num_led):
+        for led in range(self.num_leds):
             self.set_pixel(led, 0, 0, 0)
         self.show()
 
@@ -154,7 +154,7 @@ class APA102:
         """
         if led_num < 0:
             return  # Pixel is invisible, so ignore
-        if led_num >= self.num_led:
+        if led_num >= self.num_leds:
             return  # again, invisible
 
         # Calculate pixel brightness as a percentage of the
@@ -251,7 +251,7 @@ class APA102:
         the specified number of positions. The number could be negative,
         which means rotating in the opposite direction.
         """
-        cutoff = 4 * (positions % self.num_led)
+        cutoff = 4 * (positions % self.num_leds)
         self.leds = self.leds[cutoff:] + self.leds[:cutoff]
 
     def show(self):
