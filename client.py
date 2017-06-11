@@ -11,7 +11,7 @@ def main():
     strip = APA102(num_leds=NUM_LEDS,
                    order="RBG",
                    max_speed_hz=6000000)  # Initialize the strip
-    RealTimeScheme(strip).start()
+    Perlin(strip).start()
 
 
 if __name__ == '__main__':

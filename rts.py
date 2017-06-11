@@ -1,6 +1,9 @@
 from scheme import Scheme
 import random
 
+ENERGY_FROM_FOOD = 2
+MOVE_ENERGY = 0.05
+
 
 class Critter:
     init_energy = 5
@@ -11,17 +14,21 @@ class Critter:
         self.energy = self.init_energy
 
     def move(self):
-        if self.energy < 1:
+        if self.energy < 0:
             return None
+        self.energy = self.energy - MOVE_ENERGY
+
         return random.choice([-1, 0, 1])
 
-    def fight(self, other_critter):
-        print("FIGHT")
-        self.energy -= 1
-        other_critter.energy -= 1
+    def fight(self, other_critter, strip):
+        if other_critter.team != self.team:
+            print("FIGHT")
+            strip.set_pixel_rgb(self.place, 0xFFFFFF, 100)
+            self.energy -= 1
+            other_critter.energy -= 1
 
     def eat(self, breed_callback):
-        self.energy += 1
+        self.energy += ENERGY_FROM_FOOD
         if self.energy >= 10:
             self.energy = 1
             breed_callback(self.place, self.team)
@@ -41,7 +48,7 @@ class RealTimeScheme(Scheme):
     critters = []
     food = set()
 
-    init_food = 100
+    init_food = 200
     step_food = 1
 
     def init(self):
@@ -51,6 +58,7 @@ class RealTimeScheme(Scheme):
     def paint(self):
         self.paint_background()
         self.generate_food(self.step_food)
+        self.paint_food()
         self.move_critters()
         print(len(self.critters))
         return True
@@ -90,15 +98,13 @@ class RealTimeScheme(Scheme):
                 del critter_places[place]
                 continue
 
-            new_place = place + movement
+            new_place = (place + movement + self.strip.num_leds) % self.strip.num_leds
             if new_place > self.strip.num_leds:
                 new_place = new_place - self.strip.num_leds
 
             if new_place in critter_places and critter_places[new_place] is not critter:
                 # don't move there, just fight it
-                critter.fight(critter_places[new_place])
-                # explosion
-                self.strip.set_pixel_rgb(place, 0xFFFFFF, 100)
+                critter.fight(critter_places[new_place], self.strip)
                 continue
 
             critter.place = new_place

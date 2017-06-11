@@ -47,9 +47,8 @@ class Perlin(GeneratorScheme, InterpolateScheme):
         r_perlin = gen_perlin_ints(0, 255, num_octaves=self.perlin_octaves)
         g_perlin = gen_perlin_ints(0, 255, num_octaves=self.perlin_octaves)
         b_perlin = gen_perlin_ints(0, 255, num_octaves=self.perlin_octaves)
-        brightness_perlin = gen_perlin_ints(0, 100)
         while True:
-            for led in range(start_point, self.strip.num_led):
+            for led in range(start_point, self.strip.num_leds):
                 cur_color = self.strip.get_pixel(led)
                 new_color = [gamma_correct(next(r_perlin)),
                              gamma_correct(next(g_perlin)),
