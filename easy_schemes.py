@@ -1,19 +1,11 @@
 from scheme import Scheme
-from APA102.color_utils import extract_brightness
+from APA102.color_utils import gamma_correct_color
 from random import randint
-from base_schemes import Solid, GeneratorScheme, InterpolateScheme
+from base_schemes import GeneratorScheme
 from datetime import datetime
 
 
-def log_wire(r, g, b):
-    # r = gamma_correct(r)
-    # b = gamma_correct(b)
-    # g = gamma_correct(g)
-
-    print(extract_brightness(r, g, b))
-
-
-class MaxWhite(Solid):
+class MaxWhite(Scheme):
     PAUSE_BETWEEN_PAINTS = 60
 
     def init(self):
@@ -23,18 +15,18 @@ class MaxWhite(Solid):
         return False
 
 
-class Flux(Solid, InterpolateScheme):
-    PAUSE_BETWEEN_PAINTS = 60
+class Flux(Scheme):
+    PAUSE_BETWEEN_PAINTS = 0.060
 
     time_window_colors = [
-        (0, 1, [0x30, 0x0A, 0x01, 1]),
-        (1, 2, [0x03, 0x01, 0x03, 1]),
+        (0, 1, [0xF0, 0x90, 0x01, 1]),
+        (1, 2, [0xC0, 0x50, 0x00, 1]),
         (2, 8, [0x00, 0x00, 0x00, 0]),
         # bright enough during the day
         (10, 18, [0x00, 0x00, 0x00, 0]),
         (18, 21, [0xFF, 0xFF, 0xFF, 100]),
-        (21, 23, [0xA0, 0x20, 0x10, 1]),
-        (23, 0, [0x30, 0x0A, 0x01, 1]),
+        (21, 23, [0xF0, 0xBF, 0x10, 1]),
+        (23, 0, [0xF0, 0x0A, 0x01, 1]),
     ]
 
     def init(self):
@@ -45,34 +37,42 @@ class Flux(Solid, InterpolateScheme):
 
     def paint(self):
         # we do 10 minute transitions between flux colors!
-        if self.transitions:
-            for trans in self.transitions:
-                try:
-                    next(trans)
-                except StopIteration:
-                    self.transitions.remove(trans)
-            return True
+        # if self.transitions:
+        #     for trans in self.transitions:
+        #         try:
+        #             next(trans)
+        #         except StopIteration:
+        #             self.transitions.remove(trans)
+        #     return True
 
         new_color = self.get_fluxed_color()
         if new_color != self.cur_color:
             for led in range(self.strip.num_leds):
-                trans = self.paint_lin_interp(led, self.cur_color, new_color)
-                self.transitions.append(trans)
+
+                # trans = self.paint_lin_interp(led, self.cur_color, new_color, steps=100)
+                # self.transitions.append(trans)
+                self.setall(new_color)
+                return True
 
         self.cur_color = new_color
 
-    def get_fluxed_color(self):
+    def get_fluxed_color(self, force_hour=1):
+
         cur_hour = datetime.now().hour
+        cur_hour = force_hour
+
         color = [0x00, 0x00, 0x00, 0]
 
         for window_start, _, window_color in self.time_window_colors:
-            if cur_hour < window_start:
+            if force_hour < window_start:
                 break
-            color = window_color
+
+            color = gamma_correct_color(window_color)
+        print("going to color %s from %s to %s %s", color, window_start, _,)
         return color
 
 
-class FullScan(Solid):
+class FullScan(Scheme):
     PAUSE_BETWEEN_PAINTS = 0.1
     color = [0, 0, 0]
     color_step = [1, 0, 1]
@@ -91,7 +91,7 @@ class FullScan(Solid):
         return True
 
 
-class LuminosityTest(Solid):
+class LuminosityTest(Scheme):
     PAUSE_BETWEEN_PAINTS = 600
 
     def init(self):

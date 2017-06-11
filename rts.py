@@ -16,9 +16,12 @@ class Critter:
     def move(self):
         if self.energy < 0:
             return None
-        self.energy = self.energy - MOVE_ENERGY
 
-        return random.choice([-1, 0, 1])
+        move_options = [-1, 1] + [0] * 10
+        move_choice = random.choice(move_options)
+        if move_choice != 0:
+            self.energy = self.energy - MOVE_ENERGY
+        return move_choice
 
     def fight(self, other_critter, strip):
         if other_critter.team != self.team:
@@ -29,21 +32,23 @@ class Critter:
 
     def eat(self, breed_callback):
         self.energy += ENERGY_FROM_FOOD
-        if self.energy >= 10:
+        print(self.energy)
+        if self.energy >= 100:
             self.energy = 1
             breed_callback(self.place, self.team)
 
     def draw(self, strip):
-        color = [0xFF00000, 100]
+        color = [0xFF00000, self.energy]
         if self.team:
-            color = [0x00FF00, 100]
+            color = [0x00FF, self.energy]
 
         strip.set_pixel_rgb(self.place, *color)
 
 
-class RealTimeScheme(Scheme):
+class RTS(Scheme):
     """
     A Scheme built like a real-time strategy game!
+    RTS = Real time Scheme
     """
     critters = []
     food = set()
@@ -57,6 +62,7 @@ class RealTimeScheme(Scheme):
 
     def paint(self):
         self.paint_background()
+
         self.generate_food(self.step_food)
         self.paint_food()
         self.move_critters()
@@ -84,7 +90,7 @@ class RealTimeScheme(Scheme):
 
     def paint_food(self):
         for food_place in self.food:
-            self.strip.set_pixel(food_place, 0, 0, 100, 1)
+            self.strip.set_pixel(food_place, 0, 100, 0, 1)
 
     def move_critters(self):
         critter_places = {critter.place: critter for critter in self.critters}

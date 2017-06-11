@@ -1,8 +1,7 @@
 import unittest
 from unittest.mock import patch
-import mock
 from APA102 import APA102  # DID AH STUTTA
-from APA102.color_utils import extract_brightness
+from APA102.color_utils import extract_brightness, gamma_correct_color
 
 
 class APA102Tester(unittest.TestCase):
@@ -55,6 +54,13 @@ class APA102Tester(unittest.TestCase):
         # There's some inaccuracy due to our rounding to convert percentage
         # to brightness int
         self.assertEqual(strip.get_pixel(0), [0xAB, 0xCD, 0xEF, 32])
+
+    def test_gamma_correct_color(self):
+        threecolor = [0xFF, 0xAA, 0x40]
+        fourcolor = threecolor + [15]
+
+        self.assertEqual(gamma_correct_color(threecolor), [0xFF, 0x51, 0x05])
+        self.assertEqual(gamma_correct_color(fourcolor), [0xFF, 0x51, 0x05, 15])
 
 
 if __name__ == '__main__':

@@ -21,8 +21,9 @@ class Scheme:
 
     PAUSE_BETWEEN_PAINTS = 0.001  # Override to control animation speed!
 
-    def __init__(self, strip):
+    def __init__(self, strip, options):
         self.strip = strip
+        self.options = options
 
     def init(self):
         """This method is called to initialize a Scheme.
@@ -57,7 +58,7 @@ class Scheme:
     def start(self):
         """This method does the actual work."""
         try:
-            print("starting")
+            print("Starting: %s" % self.__class__.__name__)
             self.strip.clear_strip()
             self.init()  # Call the subclasses init method
             self.strip.show()
@@ -71,3 +72,35 @@ class Scheme:
         finally:
             # Finished, cleanup everything
             self.cleanup()
+
+    # A bunch of utility functions!
+    def setall(self, color):
+        for led in range(self.strip.num_leds):
+            self.strip.set_pixel(led, *color)
+
+    def tick_generators(self, gen_list):
+        for gen in gen_list:
+            try:
+                next(gen)
+            except StopIteration:
+                gen_list.remove(gen)
+
+    def paint_lin_interp(self, led_num, start_color, target_color, steps=10):
+        """
+        Returns a generator that will paint this pixel to the target over some
+        steps. good with tick_generators()
+
+        """
+
+        for cur_step in range(steps):
+            stepcolor = [
+                self.lin_interp(cur_step, steps, start_val, target_val)
+                for start_val, target_val in zip(start_color, target_color)
+            ]
+            self.strip.set_pixel(led_num, *stepcolor)
+            yield True
+
+    @staticmethod
+    def lin_interp(cur_step, num_steps, start_val, target_val):
+
+        return int(start_val + ((target_val - start_val) * (cur_step / num_steps)))

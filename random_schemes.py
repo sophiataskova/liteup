@@ -1,5 +1,5 @@
 from scheme import Scheme
-from base_schemes import GeneratorScheme, InterpolateScheme
+from base_schemes import GeneratorScheme
 from lib.perlin import gen_perlin_ints
 from APA102.color_utils import gamma_correct
 import config
@@ -24,7 +24,7 @@ class RandomColorGen(GeneratorScheme):
                 yield True
 
 
-class Perlin(GeneratorScheme, InterpolateScheme):
+class Perlin(GeneratorScheme):
     PAUSE_BETWEEN_PAINTS = 0.04
 
     # how long the perlin wave is, and how fast they adjust
@@ -53,7 +53,7 @@ class Perlin(GeneratorScheme, InterpolateScheme):
                 new_color = [gamma_correct(next(r_perlin)),
                              gamma_correct(next(g_perlin)),
                              gamma_correct(next(b_perlin)),
-                             100]
+                             self.options.brightness]
 
                 sub_gens.append(
                     self.paint_lin_interp(led, cur_color, new_color, steps=self.num_steps))

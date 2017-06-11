@@ -9,4 +9,7 @@ setup(name='liteup',
       author_email='mcscope@gmail.com',
       url='https://github.com/mcscope/liteup/',
       packages=['liteup'],
+      install_requires=[
+          "ConfigArgParse",
+      ]
       )

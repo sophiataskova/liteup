@@ -28,3 +28,19 @@ def gamma_correct(led_val, num_bits=8):
     max_val = (1 << num_bits) - 1.0
     corrected = pow(led_val / max_val, GAMMA_CORRECT_FACTOR) * max_val
     return int(corrected)
+
+
+def gamma_correct_color(color, num_bits=8):
+    if len(color) == 3:
+        r, g, b = color
+
+    elif len(color) == 4:
+        r, g, b, brightness = color
+
+    new_r = gamma_correct(r, num_bits)
+    new_g = gamma_correct(g, num_bits)
+    new_b = gamma_correct(b, num_bits)
+    if len(color) == 3:
+        return [new_r, new_g, new_b]
+    elif len(color) == 4:
+        return [new_r, new_g, new_b, brightness]
