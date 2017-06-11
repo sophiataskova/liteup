@@ -1,8 +1,9 @@
 from scheme import Scheme
 from base_schemes import GeneratorScheme
 from lib.perlin import gen_perlin_ints
-from APA102.color_utils import gamma_correct
+from APA102.color_utils import gamma_correct, gamma_correct_color
 import config
+from random import randint
 
 
 class RandomColorChaos(Scheme):
@@ -10,18 +11,24 @@ class RandomColorChaos(Scheme):
 
     def paint(self):
         for led in range(self.strip.num_leds):
-            self.strip.set_pixel(led, randint(0, 256), randint(0, 256), randint(0, 256), 1)
+            self.strip.set_pixel(led, randint(0, 256), randint(0, 256), randint(0, 256), 100)
         return True
 
 
 class RandomColorGen(GeneratorScheme):
-    PAUSE_BETWEEN_PAINTS = 1.5
+    PAUSE_BETWEEN_PAINTS = 0.05
 
     def generator(self):
         while True:
-            for led in range(self.strip.num_leds):
-                self.strip.set_pixel(led, randint(0, 256), randint(0, 256), randint(0, 256), 1)
+            if self.transitions:
+                self.tick_generators(self.transitions)
                 yield True
+                continue
+
+            for led in range(self.strip.num_leds):
+                cur_color = self.strip.get_pixel(led)
+                new_color = gamma_correct_color((randint(0, 256), randint(0, 256), randint(0, 256), randint(0, 100)))
+                self.transitions.append(self.fade(led, cur_color, new_color, steps=30))
 
 
 class Perlin(GeneratorScheme):
@@ -50,13 +57,14 @@ class Perlin(GeneratorScheme):
         while True:
             for led in range(start_point, self.strip.num_leds):
                 cur_color = self.strip.get_pixel(led)
-                new_color = [gamma_correct(next(r_perlin)),
-                             gamma_correct(next(g_perlin)),
-                             gamma_correct(next(b_perlin)),
+                new_color = [next(r_perlin),
+                             next(g_perlin),
+                             next(b_perlin),
                              self.options.brightness]
+                new_color = gamma_correct_color(new_color)
 
                 sub_gens.append(
-                    self.paint_lin_interp(led, cur_color, new_color, steps=self.num_steps))
+                    self.fade(led, cur_color, new_color, steps=self.num_steps))
 
                 # we have a tail of colors we want to update
                 self.tick_generators(sub_gens)

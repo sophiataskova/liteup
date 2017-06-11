@@ -3,20 +3,31 @@ from APA102.color_utils import gamma_correct_color
 from random import randint
 from base_schemes import GeneratorScheme
 from datetime import datetime
+import time
+
+
+class Strobe(Scheme):
+    HERTZ = 10
+
+    def paint(self):
+        self.setall((0xFF, 0xFF, 0xFF, 50))
+        self.strip.show()
+        time.sleep(1 / self.HERTZ)
+        self.strip.clear_strip()
 
 
 class MaxWhite(Scheme):
-    PAUSE_BETWEEN_PAINTS = 60
+    PAUSE_BETWEEN_PAINTS = 0.6
 
     def init(self):
-        self.setall((0xFFF, 0xFFF, 0xFFF))
+        self.setall((0xFF, 0xFF, 0xFF, 100))
 
     def paint(self):
         return False
 
 
 class Flux(Scheme):
-    PAUSE_BETWEEN_PAINTS = 0.060
+    PAUSE_BETWEEN_PAINTS = 0.0
 
     time_window_colors = [
         (0, 1, [0xF0, 0x90, 0x01, 1]),
@@ -25,7 +36,7 @@ class Flux(Scheme):
         # bright enough during the day
         (10, 18, [0x00, 0x00, 0x00, 0]),
         (18, 21, [0xFF, 0xFF, 0xFF, 100]),
-        (21, 23, [0xF0, 0xBF, 0x10, 1]),
+        (21, 23, [0xFF, 0xEF, 0xAF, 100]),
         (23, 0, [0xF0, 0x0A, 0x01, 1]),
     ]
 
@@ -49,14 +60,16 @@ class Flux(Scheme):
         if new_color != self.cur_color:
             for led in range(self.strip.num_leds):
 
-                # trans = self.paint_lin_interp(led, self.cur_color, new_color, steps=100)
+                # trans = self.fade(led, self.cur_color, new_color, steps=100)
                 # self.transitions.append(trans)
-                self.setall(new_color)
-                return True
+                pass
+
+        self.setall(new_color)
+        return True
 
         self.cur_color = new_color
 
-    def get_fluxed_color(self, force_hour=1):
+    def get_fluxed_color(self, force_hour=22):
 
         cur_hour = datetime.now().hour
         cur_hour = force_hour
@@ -75,7 +88,7 @@ class Flux(Scheme):
 class FullScan(Scheme):
     PAUSE_BETWEEN_PAINTS = 0.1
     color = [0, 0, 0]
-    color_step = [1, 0, 1]
+    color_step = [1, 0, 0]
 
     def init(self):
         self.setall(self.color)

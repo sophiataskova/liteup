@@ -85,10 +85,13 @@ class Scheme:
             except StopIteration:
                 gen_list.remove(gen)
 
-    def paint_lin_interp(self, led_num, start_color, target_color, steps=10):
+    def fade(self, led_num, start_color, target_color, steps=10):
         """
         Returns a generator that will paint this pixel to the target over some
         steps. good with tick_generators()
+
+        This uses linear interpretation.
+        maybe another kind of interpretation would also be cool?
 
         """
 
