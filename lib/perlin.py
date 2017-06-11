@@ -43,8 +43,8 @@ def gen_octave(step):
         prev_value = cur_random_val
 
 
-def gen_perlin_ints(lower, upper):
-    perlin_noise = gen_perlin()
+def gen_perlin_ints(lower, upper, num_octaves=5):
+    perlin_noise = gen_perlin(num_octaves)
 
     int_range = upper - lower
 

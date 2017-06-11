@@ -22,7 +22,6 @@ class Critter:
 
     def eat(self, breed_callback):
         self.energy += 1
-        print(f"eat! {self.energy}")
         if self.energy >= 10:
             self.energy = 1
             breed_callback(self.place, self.team)
@@ -62,7 +61,7 @@ class RealTimeScheme(Scheme):
         self.critters.append(Critter(opposite, True))
 
     def generate_food(self, numfood):
-        all_places = {*range(self.strip.num_leds)}
+        all_places = set(range(self.strip.num_leds))
 
         empty_spaces = all_places - self.food
 
