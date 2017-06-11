@@ -1,7 +1,8 @@
 from scheme import Scheme
 from APA102.color_utils import extract_brightness
 from random import randint
-from base_schemes import Solid, GeneratorScheme
+from base_schemes import Solid, GeneratorScheme, InterpolateScheme
+from datetime import datetime
 
 
 def log_wire(r, g, b):
@@ -20,6 +21,55 @@ class MaxWhite(Solid):
 
     def paint(self):
         return False
+
+
+class Flux(Solid, InterpolateScheme):
+    PAUSE_BETWEEN_PAINTS = 60
+
+    time_window_colors = [
+        (0, 1, [0x30, 0x0A, 0x01, 1]),
+        (1, 2, [0x03, 0x01, 0x03, 1]),
+        (2, 8, [0x00, 0x00, 0x00, 0]),
+        # bright enough during the day
+        (10, 18, [0x00, 0x00, 0x00, 0]),
+        (18, 21, [0xFF, 0xFF, 0xFF, 100]),
+        (21, 23, [0xA0, 0x20, 0x10, 1]),
+        (23, 0, [0x30, 0x0A, 0x01, 1]),
+    ]
+
+    def init(self):
+        self.transitions = []
+        self.cur_color = self.get_fluxed_color()
+        self.setall(self.cur_color)
+        return self.paint()
+
+    def paint(self):
+        # we do 10 minute transitions between flux colors!
+        if self.transitions:
+            for trans in self.transitions:
+                try:
+                    next(trans)
+                except StopIteration:
+                    self.transitions.remove(trans)
+            return True
+
+        new_color = self.get_fluxed_color()
+        if new_color != self.cur_color:
+            for led in range(self.strip.num_leds):
+                trans = self.paint_lin_interp(led, self.cur_color, new_color)
+                self.transitions.append(trans)
+
+        self.cur_color = new_color
+
+    def get_fluxed_color(self):
+        cur_hour = datetime.now().hour
+        color = [0x00, 0x00, 0x00, 0]
+
+        for window_start, _, window_color in self.time_window_colors:
+            if cur_hour < window_start:
+                break
+            color = window_color
+        return color
 
 
 class FullScan(Solid):
