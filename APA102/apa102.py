@@ -145,7 +145,7 @@ class APA102:
             self.set_pixel(led, 0, 0, 0)
         self.show()
 
-    def set_pixel(self, led_num, red, green, blue, bright_percent=100):
+    def set_pixel(self, led_num, red, green, blue, bright_percent=100, gamma=False):
         """Sets the color of one pixel in the LED stripe.
 
         The changed pixel is not shown yet on the Stripe, it is only
@@ -163,17 +163,17 @@ class APA102:
         brightness = ceil(bright_percent * self.global_brightness / 100.0)
         brightness = int(brightness)
 
+        if gamma:
+            red = gamma_correct(red, 8)
+            blue = gamma_correct(blue, 8)
+            green = gamma_correct(green, 8)
+
         self._set_pixel(led_num, red, green, blue, brightness)
 
     def _set_pixel(self, led_num, red, green, blue, brightness):
         """
         Just set the brightness without any more mucking about
         """
-
-        # TODO: Should we gamma correct?
-        # red = gamma_correct(red, 8)
-        # blue = gamma_correct(blue, 8)
-        # green = gamma_correct(green, 8)
 
         # LED startframe is three "1" bits, followed by 5 brightness bits
         ledstart = (brightness & 0b00011111) | self.LED_START
@@ -184,7 +184,7 @@ class APA102:
         self.leds[start_index + self.rgb[1]] = green
         self.leds[start_index + self.rgb[2]] = blue
 
-    def set_pixel_rgb(self, led_num, rgb_color, bright_percent=100):
+    def set_pixel_rgb(self, led_num, rgb_color, bright_percent=100, gamma=False):
         """Sets the color of one pixel in the LED stripe.
 
         The changed pixel is not shown yet on the Stripe, it is only
@@ -194,7 +194,7 @@ class APA102:
         """
         self.set_pixel(led_num, (rgb_color & 0xFF0000) >> 16,
                        (rgb_color & 0x00FF00) >> 8, rgb_color & 0x0000FF,
-                       bright_percent)
+                       bright_percent, gamma=gamma)
 
     def smart_set_pixel(self, led_num, r, b, g):
         """Liteup-added fn

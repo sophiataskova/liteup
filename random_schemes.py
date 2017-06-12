@@ -15,16 +15,12 @@ class RandomColorChaos(Scheme):
         return True
 
 
-class RandomColorGen(GeneratorScheme):
+class RandomColorFade(Scheme):
     PAUSE_BETWEEN_PAINTS = 0.05
+    autofade = True
 
-    def generator(self):
-        while True:
-            if self.transitions:
-                self.tick_generators(self.transitions)
-                yield True
-                continue
-
+    def paint(self):
+        if not self.transitions:
             for led in range(self.strip.num_leds):
                 cur_color = self.strip.get_pixel(led)
                 new_color = gamma_correct_color((randint(0, 256), randint(0, 256), randint(0, 256), randint(0, 100)))

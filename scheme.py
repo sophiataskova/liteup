@@ -20,10 +20,12 @@ class Scheme:
     """
 
     PAUSE_BETWEEN_PAINTS = 0.001  # Override to control animation speed!
+    autofade = False
 
     def __init__(self, strip, options):
         self.strip = strip
         self.options = options
+        self.transitions = []
 
     def init(self):
         """This method is called to initialize a Scheme.
@@ -49,6 +51,15 @@ class Scheme:
 
         raise NotImplementedError("Please implement the paint() method")
 
+    def super_paint(self):
+        autofade_update = False
+        if self.autofade and self.transitions:
+            autofade_update = True
+            self.tick_generators(self.transitions)
+
+        did_paint_update = self.paint()
+        return autofade_update or did_paint_update
+
     def cleanup(self):
         """Cleanup method."""
         self.shutdown()
@@ -63,7 +74,7 @@ class Scheme:
             self.init()  # Call the subclasses init method
             self.strip.show()
             while True:  # Loop forever
-                need_repaint = self.paint()
+                need_repaint = self.super_paint()
                 if need_repaint:
                     self.strip.show()  # repaint if required
                 # TODO asyncio yield-sleep?

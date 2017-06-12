@@ -27,61 +27,49 @@ class MaxWhite(Scheme):
 
 
 class Flux(Scheme):
-    PAUSE_BETWEEN_PAINTS = 0.0
+    PAUSE_BETWEEN_PAINTS = 6.0
+    autofade = True
 
     time_window_colors = [
-        (0, 1, [0xF0, 0x90, 0x01, 1]),
-        (1, 2, [0xC0, 0x50, 0x00, 1]),
+        (0, 1, [0x70, 0x30, 0x00, 1]),
+        (1, 2, [0x50, 0x29, 0x00, 100]),
         (2, 8, [0x00, 0x00, 0x00, 0]),
         # bright enough during the day
         (10, 18, [0x00, 0x00, 0x00, 0]),
         (18, 21, [0xFF, 0xFF, 0xFF, 100]),
-        (21, 23, [0xFF, 0xEF, 0xAF, 100]),
-        (23, 0, [0xF0, 0x0A, 0x01, 1]),
+        (21, 22, [0xFF, 0xA0, 0x3F, 40]),
+        (22, 23, [0xD0, 0x80, 0x1F, 30]),
+        (23, 0, [0xD0, 0x70, 0x0, 10]),
     ]
 
     def init(self):
-        self.transitions = []
         self.cur_color = self.get_fluxed_color()
         self.setall(self.cur_color)
         return self.paint()
 
     def paint(self):
-        # we do 10 minute transitions between flux colors!
-        # if self.transitions:
-        #     for trans in self.transitions:
-        #         try:
-        #             next(trans)
-        #         except StopIteration:
-        #             self.transitions.remove(trans)
-        #     return True
-
         new_color = self.get_fluxed_color()
         if new_color != self.cur_color:
             for led in range(self.strip.num_leds):
 
-                # trans = self.fade(led, self.cur_color, new_color, steps=100)
-                # self.transitions.append(trans)
-                pass
-
-        self.setall(new_color)
-        return True
+                trans = self.fade(led, self.cur_color, new_color, steps=100)
+                self.transitions.append(trans)
 
         self.cur_color = new_color
 
-    def get_fluxed_color(self, force_hour=22):
+    def get_fluxed_color(self):
 
         cur_hour = datetime.now().hour
-        cur_hour = force_hour
+        if self.options.force_hour is not None:
+            cur_hour = self.options.force_hour
 
         color = [0x00, 0x00, 0x00, 0]
 
         for window_start, _, window_color in self.time_window_colors:
-            if force_hour < window_start:
+            if cur_hour < window_start:
                 break
 
             color = gamma_correct_color(window_color)
-        print("going to color %s from %s to %s %s", color, window_start, _,)
         return color
 
 

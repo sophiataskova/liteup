@@ -1,7 +1,8 @@
 #!/etc/python3
 from APA102 import APA102
 from easy_schemes import LuminosityTest, MaxWhite, FullScan, Flux, Strobe
-from random_schemes import RandomColorGen, RandomColorChaos, Perlin
+from random_schemes import RandomColorFade, RandomColorChaos, Perlin
+from muni import Muni
 from scheme import Scheme
 from rts import RTS
 import configargparse
@@ -14,8 +15,9 @@ schemes = [
     RTS,
     Perlin,
     Strobe,
-    RandomColorGen,
+    RandomColorFade,
     RandomColorChaos,
+    Muni,
 ]
 SCHEME_CHOICES = {cls.__name__.lower(): cls for cls in schemes}
 
@@ -28,6 +30,7 @@ parser.add('-c', '--my-config', required=False, is_config_file=True, help='confi
 parser.add('scheme', type=str, nargs="?", help='Choose a Scheme to show!', choices=SCHEME_CHOICES, default="flux")
 parser.add('-b', '--brightness', type=int, help='percentage brighness 1-100', default=100)
 parser.add('--corners', type=int, action='append', help='Where meaningful start points', default=[])
+parser.add('--force_hour', type=int, help='force an hour (for flux)')
 
 
 options = parser.parse_args()
