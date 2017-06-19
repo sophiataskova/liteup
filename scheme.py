@@ -96,6 +96,10 @@ class Scheme:
             except StopIteration:
                 gen_list.remove(gen)
 
+    def wait(self, steps):
+        for step in range(steps):
+            yield True
+
     def fade(self, led_num, start_color, target_color, steps=10):
         """
         Returns a generator that will paint this pixel to the target over some
@@ -111,6 +115,7 @@ class Scheme:
                 self.lin_interp(cur_step, steps, start_val, target_val)
                 for start_val, target_val in zip(start_color, target_color)
             ]
+            print("fade: setting %s to %s" % (led_num, stepcolor))
             self.strip.set_pixel(led_num, *stepcolor)
             yield True
 
