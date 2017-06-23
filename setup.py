@@ -11,5 +11,6 @@ setup(name='liteup',
       packages=['liteup'],
       install_requires=[
           "ConfigArgParse",
+          "requests",
       ]
       )

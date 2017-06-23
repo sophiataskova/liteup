@@ -4,6 +4,7 @@ from easy_schemes import LuminosityTest, MaxWhite, FullScan, Flux, Strobe
 from random_schemes import RandomColorFade, RandomColorChaos, Perlin
 from muni import Muni
 from scheme import Scheme
+from perflux import PerFlux
 from rts import RTS
 import configargparse
 
@@ -18,6 +19,7 @@ schemes = [
     RandomColorFade,
     RandomColorChaos,
     Muni,
+    PerFlux,
 ]
 SCHEME_CHOICES = {cls.__name__.lower(): cls for cls in schemes}
 
