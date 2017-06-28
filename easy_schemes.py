@@ -27,12 +27,22 @@ class MaxWhite(Scheme):
         return False
 
 
+class Nice(Scheme):
+    PAUSE_BETWEEN_PAINTS = 100000
+
+    def init(self):
+        self.setall([0xFF, 0x45, 0x05, 40])
+
+    def paint(self):
+        return False
+
+
 class Flux(Scheme):
     PAUSE_BETWEEN_PAINTS = 1.0
     autofade = True
 
     time_window_colors = [
-        (0, 1, [0x70, 0x30, 0x00, 1]),
+        (0, 1, [0x19, 0x02, 0x00, 1]),
         (1, 8, [0x00, 0x00, 0x00, 0]),
         # sunrise!
         (8, 10, [0xFF, 0xFF, 0xFF, 100]),
@@ -40,10 +50,10 @@ class Flux(Scheme):
         (10, 11, [0x00, 0xFF, 0x00, 100]),
         # bright enough during the day
         (11, 18, [0x00, 0x00, 0x00, 0]),
-        (18, 21, [0xFF, 0xFF, 0xFF, 100]),
-        (21, 22, [0xFF, 0xA0, 0x3F, 40]),
-        (22, 23, [0xD0, 0x80, 0x1F, 30]),
-        (23, 0, [0xD0, 0x70, 0x0, 10]),
+        (18, 20, [0xFF, 0xFF, 0xFF, 100]),
+        (20, 22, [0xFF, 0x45, 0x05, 40]),
+        (22, 23, [0x90, 0x25, 0x00, 30]),
+        (23, 0, [0x90, 0x19, 0x0, 10]),
     ]
 
     def init(self):
@@ -52,7 +62,7 @@ class Flux(Scheme):
         self.strip.show()
 
     def paint(self):
-        new_color = self.get_fluxed_color()
+        new_color = gamma_correct_color(self.get_fluxed_color())
         if new_color != self.cur_color:
             print("twinkly transitioning to %s" % new_color)
             for led in range(self.strip.num_leds):
@@ -76,7 +86,7 @@ class Flux(Scheme):
             if cur_hour < window_start:
                 break
 
-            color = gamma_correct_color(window_color)
+            color = window_color
         return color
 
 

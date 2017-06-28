@@ -57,6 +57,3 @@ def print_perlin(nums):
     for num in nums:
         spacing = int(num * width)
         print("%1.2f%s|%s" % (num, " " * spacing, " " * (width - spacing)))
-
-
-# print_perlin(gen_octave(9))

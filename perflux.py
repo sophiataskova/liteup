@@ -1,7 +1,6 @@
 from easy_schemes import Flux
 from random_schemes import Perlin
 from lib.perlin import gen_perlin_ints
-from APA102.color_utils import gamma_correct, gamma_correct_color
 
 
 class PerFlux(Perlin, Flux):
@@ -10,6 +9,7 @@ class PerFlux(Perlin, Flux):
     multiplied by the flux color
 
     """
+    num_steps = 100
 
     def make_waves(self, max_colors):
         fluxr, fluxg, fluxb, brightness = max_colors
@@ -34,12 +34,11 @@ class PerFlux(Perlin, Flux):
                              next(g_perlin),
                              next(b_perlin),
                              brightness]
-                new_color = gamma_correct_color(new_color)
-
                 sub_gens.append(
                     self.fade(led, cur_color, new_color, steps=self.num_steps))
 
                 # we have a tail of colors we want to update
+
                 self.tick_generators(sub_gens)
 
                 yield True

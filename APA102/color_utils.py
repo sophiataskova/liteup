@@ -30,6 +30,30 @@ def gamma_correct(led_val, num_bits=8):
     return int(corrected)
 
 
+def reverse_gamma_correct(led_val, num_bits=8):
+    max_val = (1 << num_bits) - 1.0
+    reverse_multiply = led_val / max_val
+    reverse_pow = pow(reverse_multiply, 1.0 / GAMMA_CORRECT_FACTOR)
+    reverse_div = reverse_pow * max_val
+    return int(reverse_div)
+
+
+def reverse_gamma_color(color, num_bits=8):
+    if len(color) == 3:
+        r, g, b = color
+
+    elif len(color) == 4:
+        r, g, b, brightness = color
+
+    new_r = reverse_gamma_correct(r, num_bits)
+    new_g = reverse_gamma_correct(g, num_bits)
+    new_b = reverse_gamma_correct(b, num_bits)
+    if len(color) == 3:
+        return [new_r, new_g, new_b]
+    elif len(color) == 4:
+        return [new_r, new_g, new_b, brightness]
+
+
 def gamma_correct_color(color, num_bits=8):
     if len(color) == 3:
         r, g, b = color
