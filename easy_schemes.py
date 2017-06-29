@@ -37,6 +37,16 @@ class Nice(Scheme):
         return False
 
 
+class Dark(Scheme):
+    PAUSE_BETWEEN_PAINTS = 100000
+
+    def init(self):
+        self.setall([0x00, 0x00, 0x00, 0])
+
+    def paint(self):
+        return False
+
+
 class Flux(Scheme):
     PAUSE_BETWEEN_PAINTS = 1.0
     autofade = True
