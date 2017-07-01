@@ -11,7 +11,7 @@ class RandomColorChaos(Scheme):
 
     def paint(self):
         for led in range(self.strip.num_leds):
-            self.strip.set_pixel(led, randint(0, 256), randint(0, 256), randint(0, 256), 100)
+            self.strip.set_pixel(led, randint(0, 255), randint(0, 255), randint(0, 255), 100)
         return True
 
 
@@ -23,7 +23,7 @@ class RandomColorFade(Scheme):
         if not self.transitions:
             for led in range(self.strip.num_leds):
                 cur_color = self.strip.get_pixel(led)
-                new_color = gamma_correct_color((randint(0, 256), randint(0, 256), randint(0, 256), randint(0, 100)))
+                new_color = gamma_correct_color((randint(0, 255), randint(0, 255), randint(0, 255), randint(0, 100)))
                 self.transitions.append(self.fade(led, cur_color, new_color, steps=30))
 
 

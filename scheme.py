@@ -2,6 +2,7 @@
 
 import time
 import sys
+from APA102.color_utils import byte_bound
 
 
 class Scheme:
@@ -115,7 +116,7 @@ class Scheme:
                 self.lin_interp(cur_step, steps, start_val, target_val)
                 for start_val, target_val in zip(start_color, target_color)
             ]
-            print("fade: setting %s to %s" % (led_num, stepcolor))
+            stepcolor = byte_bound(stepcolor)
             self.strip.set_pixel(led_num, *stepcolor)
             yield True
 
