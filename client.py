@@ -17,13 +17,12 @@ parser.add('-b', '--brightness', type=int, help='percentage brighness 1-100', de
 parser.add('--corners', type=int, action='append', help='Where meaningful start points', default=[])
 parser.add('--force_hour', type=int, help='force an hour (for flux)')
 parser.add('--image', type=bool, default=False, help='force an hour (for flux)')
+parser.add('--num_leds', type=int, default=390, help='how many leds to light up')
+parser.add('--from_ppm', type=str, help='ImageScan can scan over a ppm image')
 
 
 options = parser.parse_args()
 print(options)
-
-
-NUM_LEDS = 390
 
 
 #TODO configurable scheme!
@@ -32,7 +31,7 @@ NUM_LEDS = 390
 def main():
     Stripcls = ImageStrip if options.image else APA102
 
-    strip = Stripcls(num_leds=NUM_LEDS,
+    strip = Stripcls(num_leds=options.num_leds,
                      order="RGB",
                      max_speed_hz=1000000)  # Initialize the strip
     SchemeCls = SCHEME_CHOICES[options.scheme.lower()]

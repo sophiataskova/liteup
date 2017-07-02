@@ -55,10 +55,8 @@ def read_image(filename):
         height = int(height)
         assert maxval == b'255'
 
-        ret_buffer = []
         for line in grouper(3 * width, image):
             line_buf = []
             for r, g, b in grouper(3, line):
                 line_buf.extend([255, r, g, b])
-            ret_buffer.append(line_buf)
-        return ret_buffer
+            yield line_buf
