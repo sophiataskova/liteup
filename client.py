@@ -1,10 +1,10 @@
 #!/etc/python3
 from APA102 import APA102
-from all_schemes import Scheme
+from all_schemes import all_schemes
 import configargparse
 from image_strip import ImageStrip
 
-SCHEME_CHOICES = {cls.__name__.lower(): cls for cls in Scheme.__subclasses__()}
+SCHEME_CHOICES = {cls.__name__.lower(): cls for cls in all_schemes}
 
 for name, cls in SCHEME_CHOICES.items():
     print(name, cls)
@@ -16,9 +16,9 @@ parser.add('scheme', type=str, nargs="?", help='Choose a Scheme to show!', choic
 parser.add('-b', '--brightness', type=int, help='percentage brighness 1-100', default=100)
 parser.add('--corners', type=int, action='append', help='Where meaningful start points', default=[])
 parser.add('--force_hour', type=int, help='force an hour (for flux)')
-parser.add('--image', type=bool, default=False, help='Output an image file (image.ppm) instead of writing to leds')
+parser.add('--save_image', type=bool, default=False, help='Output an image file (image.ppm) instead of writing to leds')
 parser.add('--num_leds', type=int, default=390, help='how many leds to light up')
-parser.add('--from_ppm', type=str, help='ImageScan can scan over a ppm image')
+parser.add('--from_ppm', type=str, help='ImageScan scheme can scan over a ppm image')
 
 
 options = parser.parse_args()
@@ -29,7 +29,7 @@ print(options)
 
 
 def main():
-    Stripcls = ImageStrip if options.image else APA102
+    Stripcls = ImageStrip if options.save_image else APA102
 
     strip = Stripcls(num_leds=options.num_leds,
                      order="RGB",
