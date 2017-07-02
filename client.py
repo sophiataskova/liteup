@@ -16,7 +16,7 @@ parser.add('scheme', type=str, nargs="?", help='Choose a Scheme to show!', choic
 parser.add('-b', '--brightness', type=int, help='percentage brighness 1-100', default=100)
 parser.add('--corners', type=int, action='append', help='Where meaningful start points', default=[])
 parser.add('--force_hour', type=int, help='force an hour (for flux)')
-parser.add('--image', type=bool, default=False, help='force an hour (for flux)')
+parser.add('--image', type=bool, default=False, help='Output an image file (image.ppm) instead of writing to leds')
 parser.add('--num_leds', type=int, default=390, help='how many leds to light up')
 parser.add('--from_ppm', type=str, help='ImageScan can scan over a ppm image')
 

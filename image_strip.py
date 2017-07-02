@@ -18,4 +18,4 @@ class ImageStrip(APA102):
         self.led_buffer.append(self.leds)
         self.leds = list(self.leds)
         if len(self.led_buffer) % 100 == 50:
-            self.write_image(self.led_buffer, filename=filename)
+            write_image(self.led_buffer, filename=filename)
