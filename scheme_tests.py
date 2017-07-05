@@ -2,7 +2,7 @@ import unittest
 from unittest.mock import patch
 import mock
 
-from base_schemes import InterpolateScheme
+from liteup.schemes.base_schemes import InterpolateScheme
 
 
 class InterpolateSchemeTester(unittest.TestCase):

@@ -2,8 +2,8 @@
 from APA102 import APA102
 from image_strip import ImageStrip
 
-from liteup.all_schemes import SCHEME_CHOICES
-from liteup.options import options
+from liteup.options import parse_options
+from liteup.schemes.all_schemes import SCHEME_CHOICES
 
 # FOR CLI OPTIONS LOOK IN OPTIONS.PY
 
@@ -12,6 +12,7 @@ from liteup.options import options
 
 
 def main():
+    options = parse_options()
     Stripcls = ImageStrip if options.save_image else APA102
 
     strip = Stripcls(num_leds=options.num_leds,

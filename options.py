@@ -1,6 +1,6 @@
 import configargparse
 
-from all_schemes import all_schemes, SCHEME_CHOICES
+from liteup.schemes.all_schemes import all_schemes, SCHEME_CHOICES
 
 
 for name, cls in SCHEME_CHOICES.items():
@@ -17,5 +17,6 @@ parser.add('--num_leds', type=int, default=390, help='how many leds to light up'
 parser.add('--from_ppm', type=str, help='ImageScan scheme can scan over a ppm image')
 
 
-options = parser.parse_args()
-print(options)
+def parse_options():
+    options = parser.parse_args()
+    return options

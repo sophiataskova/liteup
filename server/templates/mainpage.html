@@ -4,18 +4,17 @@
   <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css" integrity="sha384-BVYiiSIFeK1dGmJRAkycuHAHRg32OmUcww7on3RYdg4Va+PmSTsz/K68vbdEjh4u" crossorigin="anonymous">
   <style type="text/css">
   body {
-    /*background-color: rgb(41, 41, 41);*/
-
+    background-color: #101010;
+    -webkit-text-fill-color: ivory;
   }
   .scheme_choices button{
     padding: 30px;
     padding-top:15px;
     padding-bottom:100px;
-    margin: 10px;
+    margin: 15px;
     width: 220px;
     background: #e0eeff;
     border-radius: 30px;
-    -webkit-text-fill-color: ivory;
     font-size: large;
     background-size: 100%;
 
@@ -28,22 +27,47 @@
     flex-wrap: wrap;
     font-weight: 700px;
   }
+  .header {
+    text-align: center;
+  }
+  .header h1 {
+    margin-bottom: -10px;
+  }
+
+  .selected button {
+    border-width: 15px;
+    margin-bottom: 0px;
+    margin-left: 0px;
+    margin-right: 0px;
+    margin-top: 2px;
+    width: 250px;
+  }
+  h4 {
+    margin-bottom: 0px;
+  }
 
 </style>
 </head>
 <body>
--LITEUP-SERVER-
-<br>
-TODO: LITEUPS LISTENING:0
+  <div class="header">
+    <h1>
+      -LITEUP-SERVER-
+    </h1>
+    <h4>
+      TODO: LITEUPS LISTENING:0
+    </h4>
+  </div>
   <div class="scheme_container">
     {% for scheme_name, scheme_image in scheme_names %}
-    <div class="scheme_choices" >
+    {% if scheme_name == current_scheme %}
+      <div class="scheme_choices selected"" >
+      {% else %}
+      <div class="scheme_choices"" >
+    {% endif %}
       <form method="post" action="/config">
-        <input value="{{ scheme_name }}" name="scheme" type="hidden" type="text" >
+        <input value="{{ scheme_name }}" name="scheme_name" type="hidden"  >
         <button type="submit" style="background-image:url({{url_for('static', filename=scheme_image)}});">
-
           {{ scheme_name }}
-
         </button>
       </form>
     </div>
