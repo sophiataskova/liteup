@@ -12,6 +12,7 @@ def preview_url(SchemeCls):
 
 @app.route('/')
 def LiteupBase():
+
     scheme_names = [
         (cls.__name__, preview_url(cls)) for cls in all_schemes
         if cls.ui_select

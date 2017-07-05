@@ -16,6 +16,10 @@ parser.add('--save_image', type=bool, default=False, help='Output an image file 
 parser.add('--num_leds', type=int, default=390, help='how many leds to light up')
 parser.add('--from_ppm', type=str, help='ImageScan scheme can scan over a ppm image')
 
+# for a in parser._actions:
+# print(repr(a))
+# MWahahaha
+
 
 def parse_options():
     options = parser.parse_args()
