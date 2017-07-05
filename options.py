@@ -1,9 +1,7 @@
 import configargparse
 
-from all_schemes import all_schemes
+from all_schemes import all_schemes, SCHEME_CHOICES
 
-
-SCHEME_CHOICES = {cls.__name__.lower(): cls for cls in all_schemes}
 
 for name, cls in SCHEME_CHOICES.items():
     print(name, cls)

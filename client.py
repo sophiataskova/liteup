@@ -2,7 +2,10 @@
 from APA102 import APA102
 from image_strip import ImageStrip
 
-from options.py import otions, SCHEME_CHOICES
+from liteup.all_schemes import SCHEME_CHOICES
+from liteup.options import options
+
+# FOR CLI OPTIONS LOOK IN OPTIONS.PY
 
 
 #TODO configurable scheme!

@@ -10,3 +10,5 @@ from imagescan import ImageScan
 from twinkle_scheme import TwinkleScheme
 
 all_schemes = Scheme.__subclasses__() + GeneratorScheme.__subclasses__()
+
+SCHEME_CHOICES = {cls.__name__.lower(): cls for cls in all_schemes}

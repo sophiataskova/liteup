@@ -1,1 +1,53 @@
-Welcome to liteup server!
+<html>
+<head>
+  <title> Liteup Server! </title>
+  <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css" integrity="sha384-BVYiiSIFeK1dGmJRAkycuHAHRg32OmUcww7on3RYdg4Va+PmSTsz/K68vbdEjh4u" crossorigin="anonymous">
+  <style type="text/css">
+  body {
+    /*background-color: rgb(41, 41, 41);*/
+
+  }
+  .scheme_choices button{
+    padding: 30px;
+    padding-top:15px;
+    padding-bottom:100px;
+    margin: 10px;
+    width: 220px;
+    background: #e0eeff;
+    border-radius: 30px;
+    -webkit-text-fill-color: ivory;
+    font-size: large;
+    background-size: 100%;
+
+  }
+  .scheme_container {
+    display: flex;
+    max-width: 800px;
+    margin-left: auto;
+    margin-right: auto;
+    flex-wrap: wrap;
+    font-weight: 700px;
+  }
+
+</style>
+</head>
+<body>
+-LITEUP-SERVER-
+<br>
+TODO: LITEUPS LISTENING:0
+  <div class="scheme_container">
+    {% for scheme_name, scheme_image in scheme_names %}
+    <div class="scheme_choices" >
+      <form method="post" action="/config">
+        <input value="{{ scheme_name }}" name="scheme" type="hidden" type="text" >
+        <button type="submit" style="background-image:url({{url_for('static', filename=scheme_image)}});">
+
+          {{ scheme_name }}
+
+        </button>
+      </form>
+    </div>
+    {% endfor %}
+  </div>
+</body>
+</html>
