@@ -117,7 +117,7 @@ class Scheme:
                 self.lin_interp(cur_step, steps, start_val, target_val)
                 for start_val, target_val in zip(start_color, target_color)
             ]
-            stepcolor = byte_bound(stepcolor)
+            stepcolor = [byte_bound(x) for x in stepcolor]
             self.strip.set_pixel(led_num, *stepcolor)
             yield True
 

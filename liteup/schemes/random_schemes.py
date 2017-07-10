@@ -1,5 +1,4 @@
 from random import randint
-import liteup.config
 from liteup.lib.perlin import gen_perlin_ints
 from liteup.APA102.color_utils import gamma_correct, gamma_correct_color
 from liteup.schemes.scheme import Scheme
@@ -37,9 +36,10 @@ class Perlin(GeneratorScheme):
     perlin_octaves = 6
 
     def generator(self):
+
         waves = [
             self.perlin_wave(corner)
-            for corner in config.corners
+            for corner in self.options.corners
         ]
         while True:
             self.tick_generators(waves)
