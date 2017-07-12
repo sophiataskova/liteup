@@ -12,5 +12,7 @@ setup(name='liteup',
       install_requires=[
           "ConfigArgParse",
           "requests",
+          "flask",
+          "aiohttp",
       ]
       )
