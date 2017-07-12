@@ -1,5 +1,5 @@
 """The module contains the base Scheme class"""
-
+import asyncio
 import time
 import sys
 from liteup.APA102.color_utils import byte_bound
@@ -39,13 +39,6 @@ class Scheme:
         """
         pass
 
-    def shutdown(self):
-        """This method is called before exiting.
-
-        The default does nothing
-        """
-        pass
-
     def paint(self):
         """
         This method paints one subcycle. It must be implemented.
@@ -64,27 +57,31 @@ class Scheme:
 
     def cleanup(self):
         """Cleanup method."""
-        self.shutdown()
+        self.stop()
         self.strip.clear_strip()
         self.strip.cleanup()
 
-    def start(self):
+    async def start(self):
         """This method does the actual work."""
         try:
             print("Starting: %s" % self.__class__.__name__)
             self.strip.clear_strip()
             self.init()  # Call the subclasses init method
             self.strip.show()
-            while True:  # Loop forever
+            self.running = True
+            while self.running:
                 need_repaint = self.super_paint()
                 if need_repaint:
                     self.strip.show()  # repaint if required
-                # TODO asyncio yield-sleep?
-                time.sleep(self.PAUSE_BETWEEN_PAINTS)  # Pause until the next step
-
+                await asyncio.sleep(self.PAUSE_BETWEEN_PAINTS)
         finally:
             # Finished, cleanup everything
             self.cleanup()
+
+    def stop(self):
+        """This method is called to stop the scheme. It loops while self.running
+        """
+        self.running = False
 
     # A bunch of utility functions!
     def setall(self, color):
