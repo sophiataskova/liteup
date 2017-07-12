@@ -2,7 +2,7 @@
 import asyncio
 import json
 from aiohttp import ClientSession
-
+import aiohttp.client_exceptions
 from APA102 import APA102
 from image_strip import ImageStrip
 
@@ -69,8 +69,12 @@ async def get_fresh_config(options):
 async def fetch(server, session):
     """Fetch a url, using specified ClientSession."""
     url = "http://%s/config" % server
-    async with session.get(url) as response:
-        resp = await response.read()
+    try:
+        async with session.get(url) as response:
+            resp = await response.read()
+    except aiohttp.client_exceptions.ClientConnectorError:
+        print("Can't find server at %s " % server)
+        return None
     if not response.status == 200:
         return None
 
