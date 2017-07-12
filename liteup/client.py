@@ -45,7 +45,8 @@ def main():
 
                 old_config = fresh_config
 
-            fresh_config = await get_fresh_config(options)
+            if not options.isolate:
+                fresh_config = await get_fresh_config(options)
             await asyncio.sleep(1)
 
     loop.run_until_complete(launch())  # loop until done
