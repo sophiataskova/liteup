@@ -12,6 +12,11 @@ class ImageScan(GeneratorScheme):
     """
 
     def generator(self):
+        offset = 0
+
+        if self.options.center:
+            offset = int(self.options.center - (self.options.num_leds / 2))
+
         while True:
             image_lines = read_image(self.options.from_ppm, self.options)
 
@@ -22,4 +27,5 @@ class ImageScan(GeneratorScheme):
                 if len(led_line) < led_buffer_length:
                     self.pad_line(led_line)
                 self.strip.leds = led_line[:led_buffer_length]
+                self.strip.rotate(offset)
                 yield True

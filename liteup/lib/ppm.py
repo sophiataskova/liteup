@@ -57,6 +57,7 @@ def read_image(filename, options):
 
     with open(filename, "rb") as file:
         buf = file.read()
+        # TODO handle comments!
         magicnum, width, height, maxval, image = buf.split(maxsplit=4)
         assert magicnum == b'P6'
         width = int(width)
