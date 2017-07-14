@@ -12,13 +12,14 @@ class ImageScan(GeneratorScheme):
     """
 
     def generator(self):
-        image_lines = read_image(self.options.from_ppm)
+        while True:
+            image_lines = read_image(self.options.from_ppm, self.options)
 
-        led_buffer_length = self.options.num_leds * 4
+            led_buffer_length = self.options.num_leds * 4
 
-        for led_line in image_lines:
+            for led_line in image_lines:
 
-            if len(led_line) < led_buffer_length:
-                self.pad_line(led_line)
-            self.strip.leds = led_line[:led_buffer_length]
-            yield True
+                if len(led_line) < led_buffer_length:
+                    self.pad_line(led_line)
+                self.strip.leds = led_line[:led_buffer_length]
+                yield True
