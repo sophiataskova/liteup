@@ -26,4 +26,10 @@ parser.add('--isolate', type=bool, default=False, help="Don't poll servers to ch
 
 def parse_options():
     options = parser.parse_args()
+
+    if options.from_ppm:
+        # Right now image playback is stand-alone
+        options.isolate = True
+        options.scheme = "imagescan"
+
     return options
