@@ -1,4 +1,5 @@
 from itertools import zip_longest
+from math import ceil
 
 # Recipe from Itertools docs
 
@@ -35,7 +36,7 @@ def write_image(led_buffer, filename):
                 file.write(b"%c%c%c" % (red, green, blue))
 
 
-def read_image(filename):
+def read_image(filename, options):
     """
     read a ppm file and return the entire thing as
     [
@@ -46,6 +47,13 @@ def read_image(filename):
     Soon we'll have a proper color class that can handle these conversions.
     """
     print("reading image from %s" % filename)
+
+    LED_START = 0b11100000  # Three "1" bits, followed by 5 brightness bits
+    MAX_BRIGHTNESS = 31  # Safeguard: Set to a value appropriate for your setup
+
+    brightness = int(ceil(options.brightness / 100.0 * MAX_BRIGHTNESS))
+
+    bright_bit = (brightness & 0b00011111) | LED_START
 
     with open(filename, "rb") as file:
         buf = file.read()
@@ -58,5 +66,10 @@ def read_image(filename):
         for line in grouper(3 * width, image):
             line_buf = []
             for r, g, b in grouper(3, line):
-                line_buf.extend([255, r, g, b])
+                line_buf.extend([bright_bit, r, g, b])
+            if not all(isinstance(val, int) and val < 256 for val in line_buf):
+                # bad line! skip
+                print(f"Broken line detected in {filename}")
+                continue
+
             yield line_buf
