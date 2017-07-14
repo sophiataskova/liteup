@@ -58,8 +58,10 @@ class Scheme:
     def cleanup(self):
         """Cleanup method."""
         self.stop()
-        self.strip.clear_strip()
-        self.strip.cleanup()
+        # don't clear if we have been switched off by our parent
+        if self.running:
+            self.strip.clear_strip()
+            self.strip.cleanup()
 
     async def start(self):
         """This method does the actual work."""
