@@ -28,12 +28,12 @@ def main():
         old_config = ""
         old_scheme = None
         fresh_config = options.scheme
+        Stripcls = ImageStrip if options.save_image else APA102
+        strip = Stripcls(num_leds=options.num_leds,
+                         order="RGB",
+                         max_speed_hz=1000000)  # Initialize the strip
         while True:
             if fresh_config and fresh_config != old_config:
-                Stripcls = ImageStrip if options.save_image else APA102
-                strip = Stripcls(num_leds=options.num_leds,
-                                 order="RGB",
-                                 max_speed_hz=1000000)  # Initialize the strip
                 SchemeCls = SCHEME_CHOICES[fresh_config.lower()]
 
                 if old_scheme:
