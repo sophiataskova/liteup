@@ -50,8 +50,6 @@ class RTS(Scheme):
     A Scheme built like a real-time strategy game!
     RTS = Real time Scheme
     """
-    critters = []
-    food = set()
 
     init_food = 200
     step_food = 1
@@ -59,6 +57,8 @@ class RTS(Scheme):
     def init(self):
         self.generate_food(self.init_food)
         self.generate_critters()
+        self.critters = []
+        self.food = set()
 
     def paint(self):
         self.paint_background()
