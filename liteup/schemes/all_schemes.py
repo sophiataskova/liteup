@@ -7,6 +7,7 @@ from liteup.schemes.perflux import PerFlux
 from liteup.schemes.rts import RTS
 from liteup.schemes.imagescan import ImageScan
 from liteup.schemes.twinkle_scheme import TwinkleScheme
+from liteup.schemes.agent_scheme import AgentScheme
 
 Scheme_subclasses = Scheme.__subclasses__()
 all_schemes = Scheme.__subclasses__()
