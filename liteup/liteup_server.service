@@ -1,0 +1,14 @@
+# install me in /lib/systemd/system/liteup_server.service
+[Unit]
+Description=Liteup Server
+
+[Service]
+ExecStart=cd /home/pi/liteup; /home/pi/berryconda3/bin/python liteup/server/server.p > /home/pi/liteup/log/server.log
+Restart=always
+RestartSec=3
+TimeoutStopSec=10
+
+[Install]
+WantedBy=multi-user.target
+Alias=liteup_server.service
+

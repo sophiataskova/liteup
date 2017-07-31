@@ -1,0 +1,14 @@
+# install me in /lib/systemd/system/liteup.service
+[Unit]
+Description=Liteup Client
+
+[Service]
+ExecStart=cd /home/pi/liteup; /home/pi/berryconda3/bin/python liteup/client.py perflux > /home/pi/liteup/client.log
+Restart=always
+RestartSec=3
+TimeoutStopSec=10
+
+[Install]
+WantedBy=multi-user.target
+Alias=liteup.service
+
