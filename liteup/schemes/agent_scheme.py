@@ -17,7 +17,7 @@ class Agent:
 
 
 class Food(Agent):
-    brightness = 2
+    brightness = 20
     max_hue = 40
 
 
@@ -38,13 +38,13 @@ class Spider(Agent):
 
 
 class Crab(Agent):
-    brightness = 20
+    brightness = 40
     max_hue = 100
     moods = Enum("mood", "count gather")
 
     def __init__(self):
         super(Crab, self).__init__()
-        self.speed = 0
+        self.speed = 0.01
         self.holding = None
         self.mood = self.moods.gather
 
@@ -128,6 +128,7 @@ class Environment:
 
 class AgentScheme(GeneratorScheme):
     PAUSE_BETWEEN_PAINTS = 0.01   # Override to control animation speed!
+    ui_select = True
 
     def generator(self):
         background = [Color.make_random(2, brightness=1) for _ in range(390)]

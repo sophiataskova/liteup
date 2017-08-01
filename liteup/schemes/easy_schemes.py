@@ -52,7 +52,7 @@ class Flux(Scheme):
     autofade = True
 
     time_window_colors = [
-        (0, 1, [0x19, 0x02, 0x00, 1]),
+        (0, 1, [0x12, 0x02, 0x00, 1]),
         (1, 8, [0x00, 0x00, 0x00, 0]),
         # sunrise!
         (8, 10, [0xFF, 0xFF, 0xFF, 100]),

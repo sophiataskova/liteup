@@ -53,9 +53,11 @@ def quicksort(array, start, stop):
 
 class Sort(GeneratorScheme):
     PAUSE_BETWEEN_PAINTS = 0.00001   # Override to control animation speed!
+    ui_select = True
 
     def generator(self):
         array = clean_array()
+        array = sorted(array, reversed=True)
 
         for highlight in quicksort(array, 0, self.options.num_leds):
             yield self.draw(array, highlight)
