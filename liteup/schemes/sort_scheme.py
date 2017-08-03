@@ -17,6 +17,37 @@ def clean_array():
     return array
 
 
+def mergesort(array, start, stop):
+    if stop - start < 2:
+        # Already sorted bra
+        return True
+    midpoint = start + math.ceil((stop - start) / 2)
+    yield from mergesort(array, start, midpoint)
+    yield from mergesort(array, midpoint, stop)
+
+    # merge!
+    lhead, lstop = start, midpoint
+    rhead = midpoint
+
+    print(f"sorting {array[start:stop]} ")
+    # there's actual efficent in-place merge algorithm
+    # so we're gonna visually simulate it by inserting elements before
+    # the left list
+    while lhead < lstop and rhead < stop:
+        if array[lhead] < array[rhead]:
+            # easy, it's already in the right spot
+            lhead += 1
+            yield [lhead - 1]
+        else:
+            tmp = array.pop(rhead)
+            array.insert(lhead, tmp)
+            lhead += 1
+            lstop += 1
+            rhead += 1
+            yield [lhead + 1, rhead - 1]
+    print(f"sorted   {array[start:stop]}")
+
+
 def bubblesort(array, start, stop):
     # Bubblesort it... it's the only way to be sure
     def swap(x, y):
