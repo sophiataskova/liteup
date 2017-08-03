@@ -1,20 +1,18 @@
 import unittest
 from unittest.mock import patch
-import mock
+import random
 
-from liteup.schemes.base_schemes import InterpolateScheme
+from liteup.schemes.sort_scheme import mergesort
 
 
-class InterpolateSchemeTester(unittest.TestCase):
+class SortSchemeTester(unittest.TestCase):
 
-    def test_lin_interp(self):
-        self.assertEqual(InterpolateScheme.lin_interp(6, 10, 0, 10), 6)
-        self.assertEqual(InterpolateScheme.lin_interp(7, 10, 0, 10), 7)
-        # hit rounding
-        self.assertEqual(InterpolateScheme.lin_interp(6, 10, 0, 12), 7)
+    def test_mergesort(self):
+        random_array = [random.randint(0, 100) for x in range(1000)]
+        #mergesort is an iterator. drain it to complete
+        highlights = list(mergesort(random_array, 0, len(random_array)))
+        self.assertEqual(random_array, sorted(random_array))
 
-    def test_lin_interp2(self):
-        self.assertEqual(InterpolateScheme.lin_interp(6, 10, 20, 30), 26)
 
 if __name__ == '__main__':
     unittest.main()
