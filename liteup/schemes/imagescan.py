@@ -15,7 +15,7 @@ class ImageScan(GeneratorScheme):
         offset = 0
 
         if self.options.center:
-            offset = int(self.options.center - (self.options.num_leds / 2))
+            offset = int((self.options.num_leds / 2) - self.options.center)
 
         while True:
             image_lines = read_image(self.options.from_ppm, self.options)
