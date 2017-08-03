@@ -24,10 +24,10 @@ parser.add('-b', '--brightness', type=int, help='percentage brighness 1-100', de
 parser.add('--corners', type=int, action='append', help='Where are meaningful start points in the installation?', default=[])
 parser.add('--center', type=int, help='Wheres the logical center of the leds?', default=0)
 parser.add('--force_hour', type=int, help='force an hour (for flux)')
-parser.add('--save_image', type=bool, default=False, help='Output an image file (image.ppm) instead of writing to leds')
+parser.add('--save_image', action='store_true', default=False, help='Output an image file (image.ppm) instead of writing to leds')
 parser.add('--num_leds', type=int, default=390, help='how many leds to light up')
 parser.add('--from_ppm', type=str, help='ImageScan scheme can scan over a ppm image')
-parser.add('--isolate', type=bool, default=False, help="Don't poll servers to change config, just stick with initial config")
+parser.add('--isolate', action='store_true', help="Don't poll servers to change config, just stick with initial config")
 
 
 # for a in parser._actions:
