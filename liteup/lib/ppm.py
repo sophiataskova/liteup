@@ -32,7 +32,7 @@ def write_image(led_buffer, filename):
             # I'm dropping brightness here to simplify things
             # and fit our byte format into ppm nicely
 
-            for _, red, green, blue in grouper(4, led_line, 0):
+            for _, blue, green, red in grouper(4, led_line, 0):
                 file.write(b"%c%c%c" % (red, green, blue))
 
 
@@ -67,7 +67,7 @@ def read_image(filename, options):
         for line in grouper(3 * width, image):
             line_buf = []
             for r, g, b in grouper(3, line):
-                line_buf.extend([bright_bit, r, g, b])
+                line_buf.extend([bright_bit, b, g, r])
             if not all(isinstance(val, int) and val < 256 for val in line_buf):
                 # bad line! skip
                 print(f"Broken line detected in {filename}")
