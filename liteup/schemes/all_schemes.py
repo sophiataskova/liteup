@@ -4,6 +4,7 @@ from liteup.schemes.muni import Muni
 from liteup.schemes.scheme import Scheme
 from liteup.schemes.base_schemes import GeneratorScheme
 from liteup.schemes.perflux import PerFlux
+from liteup.schemes.perfast import PerFast
 from liteup.schemes.rts import RTS
 from liteup.schemes.imagescan import ImageScan
 from liteup.schemes.twinkle_scheme import TwinkleScheme

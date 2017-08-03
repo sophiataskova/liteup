@@ -26,8 +26,8 @@ class PerFlux(Perlin, Flux):
         while True:
             new_flux_color = self.get_fluxed_color()
             if new_flux_color != cur_flux_color:
-                r_perlin, g_perlin, b_perlin, brightness = self.make_waves(cur_flux_color)
                 cur_flux_color = new_flux_color
+                r_perlin, g_perlin, b_perlin, brightness = self.make_waves(new_flux_color)
 
             for led in range(start_point, self.strip.num_leds):
                 cur_color = self.strip.get_pixel(led)

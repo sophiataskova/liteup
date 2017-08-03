@@ -31,7 +31,7 @@ def main():
         Stripcls = ImageStrip if options.save_image else APA102
         strip = Stripcls(num_leds=options.num_leds,
                          order="RGB",
-                         max_speed_hz=1000000)  # Initialize the strip
+                         max_speed_hz=5000000)  # Initialize the strip
         while True:
             if fresh_config and fresh_config != old_config:
                 SchemeCls = SCHEME_CHOICES[fresh_config.lower()]

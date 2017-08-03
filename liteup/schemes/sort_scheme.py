@@ -1,6 +1,8 @@
 import colorsys
+import time
 from random import random
 from liteup.lib.color import Color
+import math
 from liteup.schemes.base_schemes import GeneratorScheme
 # merge sort!
 
@@ -13,6 +15,25 @@ def clean_array():
                           brightness=1, gamma=True)
         array.append(new_color)
     return array
+
+
+def bubblesort(array, start, stop):
+    # Bubblesort it... it's the only way to be sure
+    def swap(x, y):
+        tmp = array[x]
+        array[x] = array[y]
+        array[y] = tmp
+
+    for _ in range(math.ceil((len(array) / 2))):
+        for x in range(len(array) - 1):
+            if array[x] < array[x + 1]:
+                swap(x, x + 1)
+                yield [x, x + 1]
+
+        for x in range(len(array) - 2, -1, -1):
+            if array[x] < array[x + 1]:
+                swap(x, x + 1)
+                yield [x, x + 1]
 
 
 def quicksort(array, start, stop):
@@ -55,19 +76,20 @@ class Sort(GeneratorScheme):
     PAUSE_BETWEEN_PAINTS = 0.00001   # Override to control animation speed!
     ui_select = True
 
-    def generator(self):
+    def draw_sort(self, sort):
         array = clean_array()
-        array = sorted(array, reversed=True)
-
-        for highlight in quicksort(array, 0, self.options.num_leds):
+        for highlight in sort(array, 0, self.options.num_leds):
             yield self.draw(array, highlight)
 
-        while True:
-            import time
+        for _ in range(5):
             yield self.draw(array, [])
             time.sleep(1)
             yield self.draw(sorted(array), [])
             time.sleep(1)
+
+    def generator(self):
+        yield from self.draw_sort(bubblesort)
+        yield from self.draw_sort(quicksort)
 
     def draw(self, array, highlights):
         for idx, color in enumerate(array):

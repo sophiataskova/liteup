@@ -1,6 +1,6 @@
 from random import randint
 import colorsys
-from APA102.color_utils import gamma_correct_color, gamma_correct
+from liteup.APA102.color_utils import gamma_correct_color, gamma_correct
 
 
 class Color:
