@@ -80,7 +80,7 @@ class Breath(Scheme):
 
 
 class Dark(Scheme):
-    PAUSE_BETWEEN_PAINTS = 100000
+    PAUSE_BETWEEN_PAINTS = 10
 
     def init(self):
         self.setall([0x00, 0x00, 0x00, 0])
